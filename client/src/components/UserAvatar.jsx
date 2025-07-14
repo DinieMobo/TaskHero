@@ -19,9 +19,8 @@ const UserAvatar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Add check for user being null or undefined
   if (!user) {
-    return null; // Don't render this component if user isn't available
+    return null;
   }
 
   const logoutHandler = async () => {

@@ -9,7 +9,6 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
   const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
   
-  // Use react-hook-form consistently
   const {
     register,
     handleSubmit,
@@ -50,12 +49,11 @@ const ForgotPassword = () => {
               Forgot Password
             </p>
             <p className='text-center text-sm text-gray-700 dark:text-gray-500 mt-2'>
-              Enter your email address and we'll send you an OTP to reset your password
+              Enter your email address and we'll send you an OTP to reset your password.
             </p>
           </div>
           
           <div className='flex flex-col gap-y-4'>
-            {/* Use uncontrolled input with react-hook-form - remove value and onChange props */}
             <Textbox
               placeholder='you@example.com'
               type='email'

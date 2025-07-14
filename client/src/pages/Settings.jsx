@@ -23,7 +23,6 @@ const Settings = () => {
   const [updateProfile, { isLoading }] = useUpdateUserProfileMutation();
   const [changePassword, { isLoading: isChangingPassword }] = useChangePasswordMutation();
   
-  // Use getCurrentTheme for initial state
   const [darkMode, setDarkMode] = useState(getCurrentTheme() === 'dark');
   
   const [activeTab, setActiveTab] = useState("profile");
@@ -32,7 +31,6 @@ const Settings = () => {
   const [maintenanceMode, setMaintenanceMode] = useState(false);
   const [archiveDays, setArchiveDays] = useState(30);
   
-  // Add this query to fetch user statistics
   const { 
     data: userStats,
     isLoading: isLoadingStats,
@@ -41,7 +39,7 @@ const Settings = () => {
     skip: !user?.isAdmin || activeTab !== "admin"
   });
   
-  // Profile update form
+  // Profile update
   const {
     register: registerProfile,
     handleSubmit: handleSubmitProfile,
@@ -54,7 +52,7 @@ const Settings = () => {
     },
   });
 
-  // Password change form
+  // Password change
   const {
     register: registerPassword,
     handleSubmit: handleSubmitPassword,
@@ -100,7 +98,6 @@ const Settings = () => {
 
   // User Management Summary section in the Admin tab
   const renderUserManagementSection = () => {
-    // Show loading state while fetching statistics
     if (isLoadingStats) {
       return (
         <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6">
@@ -112,7 +109,6 @@ const Settings = () => {
       );
     }
     
-    // Show error state if there was a problem fetching statistics
     if (statsError) {
       return (
         <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6">
@@ -131,7 +127,6 @@ const Settings = () => {
       );
     }
     
-    // Default values in case API returns null/undefined
     const stats = userStats?.stats || {
       totalUsers: 0,
       activeUsers: 0, 
@@ -178,7 +173,6 @@ const Settings = () => {
     );
   };
   
-  // Listen for theme changes from other components
   useEffect(() => {
     const handleThemeChange = (e) => {
       setDarkMode(e.detail.theme === 'dark');
@@ -188,7 +182,6 @@ const Settings = () => {
     return () => window.removeEventListener('themeChanged', handleThemeChange);
   }, []);
   
-  // Update toggleDarkMode to use the utility function
   const handleToggleDarkMode = () => {
     const isDark = toggleTheme();
     setDarkMode(isDark);
@@ -196,7 +189,6 @@ const Settings = () => {
   };
 
   const saveAdminSettings = () => {
-    // In a real app, this would save settings to the backend
     toast.success("System settings updated successfully");
   };
 
@@ -261,7 +253,7 @@ const Settings = () => {
               </div>
               
               <button 
-                onClick={handleToggleDarkMode} // Updated function name
+                onClick={handleToggleDarkMode}
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
                   darkMode ? 'bg-blue-600' : 'bg-gray-300'
                 }`}

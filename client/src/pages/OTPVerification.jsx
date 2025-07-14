@@ -2,16 +2,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Button, Loading } from "../components";
-import { useVerifyOtpMutation } from "../redux/slices/api/authApiSlice";
+import { useverifyOTPMutation } from "../redux/slices/api/authApiSlice";
 
 const OTPVerification = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const navigate = useNavigate();
   const inputRefs = useRef([]);
   const location = useLocation();
-  const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
+  const [verifyOTP, { isLoading }] = useverifyOTPMutation();
 
-  // Check if email exists in location state
   useEffect(() => {
     if (!location?.state?.email) {
       navigate("/forgot-password");
@@ -29,7 +28,7 @@ const OTPVerification = () => {
     }
 
     try {
-      const response = await verifyOtp({
+      const response = await verifyOTP({
         otp: otp.join(""),
         email: location.state.email
       }).unwrap();
@@ -49,21 +48,18 @@ const OTPVerification = () => {
   };
 
   const handleOtpChange = (index, value) => {
-    // Allow only numbers
     if (!/^\d*$/.test(value)) return;
 
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
 
-    // Auto-focus next input
     if (value && index < 5) {
       inputRefs.current[index + 1].focus();
     }
   };
 
   const handleKeyDown = (index, e) => {
-    // Handle backspace to move focus to previous input
     if (e.key === 'Backspace' && !otp[index] && index > 0) {
       inputRefs.current[index - 1].focus();
     }

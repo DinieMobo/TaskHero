@@ -53,7 +53,6 @@ const linkData = [
     link: "trashed",
     icon: <FaTrashAlt />,
   },
-  // Add Settings to the main navigation links
   {
     label: "Settings",
     link: "settings",
@@ -67,7 +66,6 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const path = location.pathname.split("/")[1];
-  // Include Settings in the sidebar for all users
   const sidebarLinks = user?.isAdmin ? linkData : linkData.slice(0, 6).concat(linkData.slice(8));
 
   const closeSidebar = () => {

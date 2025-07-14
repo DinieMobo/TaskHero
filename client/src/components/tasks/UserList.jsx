@@ -11,7 +11,6 @@ export default function UserList({ team, setTeam }) {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const { user: currentUser } = useSelector(state => state.auth);
   
-  // Prepare fallback users list in case API fails
   const fallbackUser = currentUser ? [
     {
       _id: currentUser._id,
@@ -21,7 +20,6 @@ export default function UserList({ team, setTeam }) {
     }
   ] : [];
   
-  // Use API data if available, otherwise use fallback
   const availableUsers = (data && data.length > 0) ? data : fallbackUser;
 
   const handleChange = (el) => {
@@ -31,21 +29,17 @@ export default function UserList({ team, setTeam }) {
 
   useEffect(() => {
     if (availableUsers.length > 0 && (!team || team.length < 1)) {
-      // Set default selection to first user if none selected
       setSelectedUsers([availableUsers[0]]);
       setTeam([availableUsers[0]._id]);
     }
   }, [availableUsers, team]);
 
-  // Map team IDs to user objects for display when editing a task
   useEffect(() => {
     if (availableUsers.length > 0 && team && team.length > 0 && Array.isArray(team)) {
-      // Handle case where team is array of IDs
       if (typeof team[0] === 'string') {
         const userObjects = availableUsers.filter(user => team.includes(user._id));
         setSelectedUsers(userObjects.length > 0 ? userObjects : [availableUsers[0]]);
       } else {
-        // Team is already array of objects
         setSelectedUsers(team);
       }
     }

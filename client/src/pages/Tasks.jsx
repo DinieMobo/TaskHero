@@ -6,7 +6,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { Button, Loading, Table, Tabs, Title } from "../components";
 import { AddTask, BoardView, TaskTitle } from "../components/tasks";
 import { useGetAllTaskQuery } from "../redux/slices/api/taskApiSlice";
-import { TASK_TYPE } from "../utils";
+import { Task_Type } from "../utils";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -32,7 +32,6 @@ const Tasks = () => {
     search: searchTerm,
   });
 
-  // Add error handling
   useEffect(() => {
     if (error) {
       console.error("Error loading tasks:", error);
@@ -40,12 +39,10 @@ const Tasks = () => {
     }
   }, [error]);
 
-  // Add debug logging
   useEffect(() => {
     console.log("Tasks data:", data);
   }, [data]);
 
-  // Debug the user object to see if isAdmin is present and true
   useEffect(() => {
     console.log("Current user:", user);
   }, [user]);
@@ -64,8 +61,6 @@ const Tasks = () => {
       <div className='flex items-center justify-between mb-4'>
         <Title title={status ? `${status} Tasks` : "Tasks"} />
 
-        {/* Fix: Display button regardless of status if the user is admin 
-            Also add a fallback check in case user.isAdmin is undefined */}
         {user?.isAdmin && (
           <Button
             label='Create Task'
@@ -80,12 +75,12 @@ const Tasks = () => {
         <Tabs tabs={TABS} setSelected={setSelected}>
           {!status && (
             <div className='w-full flex justify-between gap-4 md:gap-x-12 py-4'>
-              <TaskTitle label='To Do' className={TASK_TYPE.todo} />
+              <TaskTitle label='To Do' className={Task_Type.todo} />
               <TaskTitle
                 label='In Progress'
-                className={TASK_TYPE["in progress"]}
+                className={Task_Type["in progress"]}
               />
-              <TaskTitle label='Completed' className={TASK_TYPE.completed} />
+              <TaskTitle label='Completed' className={Task_Type.completed} />
             </div>
           )}
 

@@ -47,11 +47,10 @@ const Signup = () => {
   return (
     <div className='w-full min-h-screen flex items-center justify-center py-8 bg-[#f3f4f6] dark:bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#302943] via-slate-900 to-black'>
       <div className='w-full max-w-6xl px-4 md:px-8 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16'>
-        {/* Left Side - Hero */}
         <div className='w-full md:w-1/2 flex flex-col items-center justify-center mb-8 md:mb-0'>
           <div className='w-full flex flex-col items-center justify-center gap-4'>
             <span className='inline-flex py-1 px-3 border rounded-full text-sm md:text-base dark:border-gray-700 dark:text-green-400 border-gray-300 text-gray-600'>
-              Join our productivity platform!
+              Boost your productivity today!
             </span>
             <h1 className='text-4xl md:text-5xl font-black text-center dark:text-gray-400 text-green-700'>
               TaskHero
@@ -67,10 +66,10 @@ const Signup = () => {
           >
             <div>
               <p className='text-green-600 text-xl sm:text-2xl font-bold text-center'>
-                Join TaskHero!
+                Become a TaskHero Member
               </p>
               <p className='text-center text-sm text-gray-700 dark:text-gray-500'>
-                Create your account and start managing tasks efficiently
+                Complete your profile to start conquering your tasks effectively.
               </p>
             </div>
             
@@ -90,7 +89,7 @@ const Signup = () => {
                 />
 
                 <Textbox
-                  placeholder='Developer'
+                  placeholder='Software Engineer'
                   type='text'
                   name='title'
                   label='Job Title'
@@ -101,7 +100,7 @@ const Signup = () => {
               </div>
 
               <Textbox
-                placeholder='you@example.com'
+                placeholder='you@company.com'
                 type='email'
                 name='email'
                 label='Email Address'
@@ -114,10 +113,10 @@ const Signup = () => {
               />
 
               <Textbox
-                placeholder='Employee'
+                placeholder='Team Member / Manager'
                 type='text'
                 name='role'
-                label='Role'
+                label='Your Role'
                 className='w-full h-11 rounded-xl border-2 border-gray-200 dark:border-gray-600 focus:border-green-500'
                 register={register("role", { required: "Role is required!" })}
                 error={errors.role ? errors.role.message : ""}
@@ -125,10 +124,10 @@ const Signup = () => {
 
               <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
                 <Textbox
-                  placeholder='Password'
+                  placeholder='Minimum 6 characters'
                   type='password'
                   name='password'
-                  label='Password'
+                  label='Create Password'
                   className='w-full h-11 rounded-xl border-2 border-gray-200 dark:border-gray-600 focus:border-green-500'
                   register={register("password", {
                     required: "Password is required!",
@@ -138,7 +137,7 @@ const Signup = () => {
                 />
 
                 <Textbox
-                  placeholder='Confirm Password'
+                  placeholder='Verify password'
                   type='password'
                   name='confirmPassword'
                   label='Confirm Password'
@@ -161,7 +160,7 @@ const Signup = () => {
               ) : (
                 <Button
                   type='submit'
-                  label='Create Account'
+                  label='Start Your Journey'
                   className='w-full h-12 bg-gradient-to-r from-green-600 to-purple-600 hover:from-green-700 hover:to-purple-700 text-white rounded-xl transform transition-all duration-300 hover:scale-[1.01] hover:shadow-lg active:scale-[0.98] font-semibold'
                 />
               )}
@@ -170,12 +169,12 @@ const Signup = () => {
             {/* Sign in link */}
             <div className='text-center pt-4 border-t border-gray-200 dark:border-gray-600'>
               <div className='text-sm text-gray-600 dark:text-gray-400'>
-                Already have an account?{' '}
+                Already have a TaskHero account?{' '}
                 <Link 
                   to='/log-in' 
                   className='text-green-600 dark:text-green-400 hover:text-purple-600 dark:hover:text-purple-400 font-semibold transition-all duration-300 hover:underline'
                 >
-                  Sign in here
+                  Sign in to your account
                 </Link>
               </div>
             </div>

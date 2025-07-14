@@ -6,7 +6,7 @@ import { HiDuplicate } from "react-icons/hi";
 import { MdAdd, MdOutlineEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { Menu, Transition } from "@headlessui/react";
-import { toast } from "sonner"; // Changed from react-toastify to sonner to match your project
+import { toast } from "sonner";
 import {
   useDuplicateTaskMutation,
   usePostTaskActivityMutation,
@@ -71,7 +71,6 @@ const TaskDialog = ({ task }) => {
 
   const deleteHandler = async () => {
     try {
-      // Fix: Pass the correct object structure expected by the API
       const res = await deleteTask({
         id: task._id,
       }).unwrap();

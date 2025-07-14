@@ -45,7 +45,6 @@ const Login = () => {
   return (
     <div className='w-full min-h-screen flex items-center justify-center py-8 bg-[#f3f4f6] dark:bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#302943] via-slate-900 to-black'>
       <div className='w-full max-w-6xl px-4 md:px-8 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16'>
-        {/* Left Side - Hero */}
         <div className='w-full md:w-1/2 flex flex-col items-center justify-center mb-8 md:mb-0'>
           <div className='w-full flex flex-col items-center justify-center gap-4'>
             <h1 className='text-4xl md:text-6xl font-black text-center dark:text-gray-400 text-blue-700'>
@@ -57,7 +56,6 @@ const Login = () => {
           </div>
         </div>
 
-        {/* Right Side - Form */}
         <div className='w-full md:w-1/2 flex justify-center'>
           <form
             onSubmit={handleSubmit(handleLogin)}

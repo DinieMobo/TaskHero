@@ -1,8 +1,9 @@
 import { apiSlice } from '../apiSlice';
-import { USERS_URL } from '../../../utils/contants';
+import { USERS_URL } from '../../../utils/contents';
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    // User login
     login: builder.mutation({
       query: (data) => ({
         url: `${USERS_URL}/login`,
@@ -11,6 +12,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         credentials: 'include',
       }),
     }),
+    // User logout
     logout: builder.mutation({
       query: () => ({
         url: `${USERS_URL}/logout`,
@@ -18,6 +20,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         credentials: 'include',
       }),
     }),
+    // User registration
     register: builder.mutation({
       query: (data) => ({
         url: `${USERS_URL}/register`,
@@ -25,6 +28,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    // Forgot password
     forgotPassword: builder.mutation({
       query: (data) => ({
         url: `${USERS_URL}/forgot-password`,
@@ -32,7 +36,8 @@ export const authApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-    verifyOtp: builder.mutation({
+    // Verify OTP
+    verifyOTP: builder.mutation({
       query: (data) => ({
         url: `${USERS_URL}/verify-otp`,
         method: 'POST',
@@ -54,6 +59,6 @@ export const {
   useLogoutMutation, 
   useRegisterMutation,
   useForgotPasswordMutation,
-  useVerifyOtpMutation,
+  useverifyOTPMutation,
   useResetPasswordMutation,
 } = authApiSlice;

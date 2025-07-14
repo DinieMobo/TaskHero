@@ -17,7 +17,6 @@ const ResetPassword = () => {
   const location = useLocation();
   const [resetPassword, { isLoading }] = useResetPasswordMutation();
 
-  // Check if token and email exist in location state
   useEffect(() => {
     if (!location?.state?.token || !location?.state?.email) {
       navigate("/forgot-password");
@@ -75,7 +74,7 @@ const ResetPassword = () => {
               Reset Password
             </p>
             <p className='text-center text-sm text-gray-700 dark:text-gray-500 mt-2'>
-              Create a new password for your account
+              Create a new password for your account.
             </p>
           </div>
           

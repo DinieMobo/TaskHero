@@ -1,10 +1,8 @@
 export const formatDate = (date) => {
-  // Get the month, day, and year
   const month = date.toLocaleString("en-US", { month: "short" });
   const day = date.getDate();
   const year = date.getFullYear();
 
-  // Format the date as "MM dd, yyyy"
   const formattedDate = `${day}-${month}-${year}`;
 
   return formattedDate;
@@ -25,13 +23,8 @@ export function dateFormatter(dateString) {
   return formattedDate;
 }
 
-/**
- * Gets the initials from a name
- * @param {string} name - The name to get initials from
- * @returns {string} - The initials
- */
 export const getInitials = (name) => {
-  if (!name) return "?"; // Return a fallback character if name is undefined or empty
+  if (!name) return "?";
 
   const names = name.split(" ");
   if (names.length === 1) {
@@ -56,13 +49,13 @@ export const updateURL = ({ searchTerm, navigate, location }) => {
   return newURL;
 };
 
-export const PRIOTITYSTYELS = {
+export const PriorityStyles = {
   high: "text-red-600",
   medium: "text-yellow-600",
   low: "text-blue-600",
 };
 
-export const TASK_TYPE = {
+export const Task_Type = {
   todo: "bg-blue-600",
   "in progress": "bg-yellow-600",
   completed: "bg-blue-600",

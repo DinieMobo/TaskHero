@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { useRegisterMutation } from "../redux/slices/api/authApiSlice";
 import { useUpdateUserProfileMutation } from "../redux/slices/api/userApiSlice";
 import { setCredentials } from "../redux/slices/authSlice";
-import { Button, Loading, ModalWrapper, Textbox } from "./";
+import { Button, Loading, ModelWrapper, Textbox } from "./";
 
 const AddUser = ({ open, setOpen, userData }) => {
   let defaultValues = userData ?? {};
@@ -52,7 +52,7 @@ const AddUser = ({ open, setOpen, userData }) => {
 
   return (
     <>
-      <ModalWrapper open={open} setOpen={setOpen}>
+      <ModelWrapper open={open} setOpen={setOpen}>
         <form onSubmit={handleSubmit(handleOnSubmit)} className=''>
           <Dialog.Title
             as='h2'
@@ -129,7 +129,7 @@ const AddUser = ({ open, setOpen, userData }) => {
             </div>
           )}
         </form>
-      </ModalWrapper>
+      </ModelWrapper>
     </>
   );
 };

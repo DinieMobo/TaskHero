@@ -10,7 +10,7 @@ import NotificationPanel from "./NotificationPanel";
 import UserAvatar from "./UserAvatar";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { updateURL } from "../utils";
-import { useTheme } from "./ThemeProvider"; // Import useTheme
+import { useTheme } from "./ThemeProvider";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useSelector((state) => state.auth);
-  const { isDark, toggleTheme } = useTheme(); // Get theme state and toggle function
+  const { isDark, toggleTheme } = useTheme();
 
   const [searchTerm, setSearchTerm] = useState(
     searchParams.get("search") || ""
@@ -64,7 +64,6 @@ const Navbar = () => {
       </div>
 
       <div className='flex gap-4 items-center'>
-        {/* Theme Toggle Button */}
         <button
           onClick={toggleTheme}
           className='text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'

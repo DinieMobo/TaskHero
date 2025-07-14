@@ -1,5 +1,5 @@
 import { Transition } from "@headlessui/react";
-import { Fragment, useEffect, useRef, useState } from "react"; // Added useState, useEffect
+import { Fragment, useEffect, useRef, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
@@ -26,17 +26,14 @@ function Layout() {
   const { user } = useSelector((state) => state.auth);
   const location = useLocation();
 
-  // If auth is still loading, show a loading indicator
   if (user === undefined) {
     return <div className="w-full h-screen flex items-center justify-center">Loading...</div>;
   }
 
-  // If no user is found, redirect to login
   if (!user) {
     return <Navigate to='/log-in' state={{ from: location }} replace />;
   }
 
-  // User is authenticated, show layout
   return (
     <div className='w-full h-screen flex flex-col md:flex-row'>
       <div className='w-1/5 h-screen bg-white dark:bg-[#1f1f1f] sticky top-0 hidden md:block'>
@@ -106,16 +103,13 @@ const MobileSidebar = () => {
 };
 
 const App = () => {
-  // Use localStorage or system preference for initial theme
   const [theme, setTheme] = useState(() => {
-    // Check if a theme preference exists in localStorage
     const savedTheme = localStorage.getItem('theme');
     
     if (savedTheme) {
       return savedTheme;
     }
     
-    // If no saved preference, check system preference
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       return 'dark';
     }
@@ -123,7 +117,6 @@ const App = () => {
     return 'light';
   });
 
-  // Apply theme class to document root
   useEffect(() => {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
@@ -132,7 +125,6 @@ const App = () => {
     }
   }, [theme]);
 
-  // Listen for theme changes from other components
   useEffect(() => {
     const handleThemeChange = (e) => {
       setTheme(e.detail.theme);

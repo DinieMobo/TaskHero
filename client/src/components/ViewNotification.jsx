@@ -1,18 +1,16 @@
 import React from "react";
-import ModalWrapper from "./ModalWrapper";
+import ModelWrapper from "./ModelWrapper";
 import { Dialog } from "@headlessui/react";
 import Button from "./Button";
 
 const ViewNotification = ({ open, setOpen, el }) => {
-  // Early return if notification is null/undefined
   if (!open) return null;
 
-  // Get safe values with fallbacks
   const title = el?.task?.title || "Notification";
   const text = el?.text || "No details available";
 
   return (
-    <ModalWrapper open={open} setOpen={setOpen}>
+    <ModelWrapper open={open} setOpen={setOpen}>
       <div className='py-4 w-full flex flex-col gap-4 items-center justify-center'>
         <Dialog.Title as='h3' className='font-semibold text-lg'>
           {title}
@@ -27,7 +25,7 @@ const ViewNotification = ({ open, setOpen, el }) => {
           label='Ok'
         />
       </div>
-    </ModalWrapper>
+    </ModelWrapper>
   );
 };
 

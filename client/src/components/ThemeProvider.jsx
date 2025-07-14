@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { getCurrentTheme, setTheme as setThemeUtil } from '../utils/theme';
 
-// Create theme context
 const ThemeContext = createContext();
 
 export const useTheme = () => {
@@ -15,20 +14,17 @@ export const useTheme = () => {
 export const ThemeProvider = ({ children }) => {
   const [theme, setThemeState] = useState(getCurrentTheme());
 
-  // Function to update theme
   const setTheme = (newTheme) => {
     setThemeUtil(newTheme);
     setThemeState(newTheme);
   };
 
-  // Toggle between light and dark
   const toggleTheme = () => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
     return newTheme === 'dark';
   };
 
-  // Listen for theme changes
   useEffect(() => {
     const handleThemeChange = (e) => {
       setThemeState(e.detail.theme);

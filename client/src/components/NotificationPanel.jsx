@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import {
   useGetNotificationsQuery,
-  useMarkNotiAsReadMutation,
+  useMarkNotificationAsReadMutation,
 } from "../redux/slices/api/userApiSlice";
 import ViewNotification from "./ViewNotification";
 
@@ -27,9 +27,8 @@ export default function NotificationPanel() {
 
   const { data: notificationData, isLoading, error, refetch } =
     useGetNotificationsQuery();
-  const [markAsRead, { isLoading: isMarking }] = useMarkNotiAsReadMutation();
+  const [markAsRead, { isLoading: isMarking }] = useMarkNotificationAsReadMutation();
 
-  // Safely handle data - ensure it's an array
   const notifications = Array.isArray(notificationData) ? notificationData : [];
 
   const viewHandler = (el) => {
@@ -44,10 +43,9 @@ export default function NotificationPanel() {
   };
 
   const readHandler = async (isReadType, id) => {
-    if (isMarking) return; // Prevent multiple simultaneous requests
+    if (isMarking) return;
 
     try {
-      // Ensure these values are never undefined
       const readType = isReadType || "all";
       const notificationId = id || "";
 
@@ -55,7 +53,6 @@ export default function NotificationPanel() {
         `Attempting to mark notification(s) as read: type=${readType}, id=${notificationId}`
       );
 
-      // Use a simple retry mechanism
       let retries = 0;
       let success = false;
       let lastError = null;
@@ -72,7 +69,6 @@ export default function NotificationPanel() {
           lastError = err;
           retries++;
 
-          // Wait a bit before retrying
           if (retries < 2) {
             await new Promise((resolve) => setTimeout(resolve, 500));
           }
@@ -83,19 +79,16 @@ export default function NotificationPanel() {
         throw lastError;
       }
 
-      // Show appropriate success message based on action type
       if (readType === "all") {
         toast.success("All notifications marked as read");
       } else {
         toast.success("Notification marked as read");
       }
 
-      // Refresh the notifications data
       refetch();
     } catch (error) {
       console.error("Error marking notifications as read:", error);
 
-      // Add more specific error handling for network issues
       if (error?.status === 404) {
         toast.error("Endpoint not found. Please contact support.");
         console.error("API endpoint not found. Check the route configuration.");
@@ -164,19 +157,19 @@ export default function NotificationPanel() {
                     ) : error ? (
                       <div className='p-8 text-center'>
                         <p className='text-red-500 dark:text-red-400'>
-                          Failed to load notifications
+                          Failed to load notifications.
                         </p>
                         <button
                           onClick={() => refetch()}
                           className='mt-2 text-blue-600 hover:underline'
                         >
-                          Try again
+                          Try again.
                         </button>
                       </div>
                     ) : notifications.length === 0 ? (
                       <div className='p-8 text-center'>
                         <p className='text-gray-500 dark:text-gray-400'>
-                          No new notifications
+                          No new notifications.
                         </p>
                       </div>
                     ) : (
@@ -258,7 +251,6 @@ export default function NotificationPanel() {
         )}
       </Popover>
 
-      {/* Pass notification data safely to ViewNotification */}
       <ViewNotification
         open={open}
         setOpen={setOpen}

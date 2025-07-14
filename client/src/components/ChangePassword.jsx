@@ -3,7 +3,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import Button from "./Button";
 import Loading from "./Loading";
-import ModalWrapper from "./ModalWrapper";
+import ModelWrapper from "./ModelWrapper";
 import Textbox from "./Textbox";
 import { useChangePasswordMutation } from "../redux/slices/api/userApiSlice";
 import { toast } from "sonner";
@@ -37,7 +37,7 @@ const ChangePassword = ({ open, setOpen }) => {
 
   return (
     <>
-      <ModalWrapper open={open} setOpen={setOpen}>
+      <ModelWrapper open={open} setOpen={setOpen}>
         <form onSubmit={handleSubmit(handleOnSubmit)} className=''>
           <Dialog.Title
             as='h2'
@@ -92,7 +92,7 @@ const ChangePassword = ({ open, setOpen }) => {
             </div>
           )}
         </form>
-      </ModalWrapper>
+      </ModelWrapper>
     </>
   );
 };

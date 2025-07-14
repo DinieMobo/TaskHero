@@ -20,7 +20,7 @@ import {
   useDeleteRestoreTaskMutation,
   useGetAllTaskQuery,
 } from "../redux/slices/api/taskApiSlice";
-import { PRIOTITYSTYELS, TASK_TYPE } from "../utils/index";
+import { PriorityStyles, Task_Type } from "../utils/index";
 import { useSearchParams } from "react-router-dom";
 
 const Icons = {
@@ -69,7 +69,7 @@ const Trash = () => {
     setMsg("Do you want to restore the selected item?");
     setOpenDialog(true);
   };
-  // WE GO HERE ON RESUME
+
   const deleteRestoreHandler = async () => {
     try {
       let res = null;
@@ -128,7 +128,7 @@ const Trash = () => {
     <tr className='border-b border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-400/10'>
       <td className='py-2'>
         <div className='flex items-center gap-2'>
-          <TaskColor className={TASK_TYPE[item.stage]} />
+          <TaskColor className={Task_Type[item.stage]} />
           <p className='w-full line-clamp-2 text-base text-black dark:text-gray-400'>
             {item?.title}
           </p>
@@ -137,7 +137,7 @@ const Trash = () => {
 
       <td className='py-2 capitalize'>
         <div className={"flex gap-1 items-center"}>
-          <span className={clsx("text-lg", PRIOTITYSTYELS[item?.priority])}>
+          <span className={clsx("text-lg", PriorityStyles[item?.priority])}>
             {Icons[item?.priority]}
           </span>
           <span className=''>{item?.priority}</span>

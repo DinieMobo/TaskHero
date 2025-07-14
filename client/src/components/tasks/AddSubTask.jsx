@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { useCreateSubTaskMutation } from "../../redux/slices/api/taskApiSlice";
 import Button from "../Button";
 import Loading from "../Loading";
-import ModalWrapper from "../ModalWrapper";
+import ModelWrapper from "../ModelWrapper";
 import Textbox from "../Textbox";
 
 const AddSubTask = ({ open, setOpen, id }) => {
@@ -35,7 +35,7 @@ const AddSubTask = ({ open, setOpen, id }) => {
 
   return (
     <>
-      <ModalWrapper open={open} setOpen={setOpen}>
+      <ModelWrapper open={open} setOpen={setOpen}>
         <form onSubmit={handleSubmit(handleOnSubmit)} className=''>
           <Dialog.Title
             as='h2'
@@ -102,7 +102,7 @@ const AddSubTask = ({ open, setOpen, id }) => {
             </div>
           )}
         </form>
-      </ModalWrapper>
+      </ModelWrapper>
     </>
   );
 };

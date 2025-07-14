@@ -10,8 +10,8 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import {
-  PRIOTITYSTYELS,
-  TASK_TYPE,
+  PriorityStyles,
+  Task_Type,
   BGS,
   formatDate,
 } from "../../utils/index.js";
@@ -35,7 +35,7 @@ const TaskCard = ({ task }) => {
           <div
             className={clsx(
               "flex flex-1 gap-1 items-center text-sm font-medium",
-              PRIOTITYSTYELS[task?.priority]
+              PriorityStyles[task?.priority]
             )}
           >
             <span className='text-lg'>{Icons[task?.priority]}</span>
@@ -46,7 +46,7 @@ const TaskCard = ({ task }) => {
         <>
           <Link to={`/task/${task._id}`}>
             <div className='flex items-center gap-2'>
-              <TaskColor className={TASK_TYPE[task.stage]} />
+              <TaskColor className={Task_Type[task.stage]} />
               <h4 className='text- line-clamp-1 text-black dark:text-white'>
                 {task?.title}
               </h4>
@@ -65,7 +65,6 @@ const TaskCard = ({ task }) => {
             assets={task?.assets?.length}
           />
           
-          {/* Display team members */}
           <div className='flex flex-row-reverse'>
             {task?.team?.length > 0 &&
               task?.team?.map((m, index) => (
@@ -82,7 +81,6 @@ const TaskCard = ({ task }) => {
           </div>
         </div>
 
-        {/* subtasks */}
         {task?.subTasks?.length > 0 ? (
           <div className='py-4 border-t border-gray-200 dark:border-gray-700'>
             <h5 className='text-base line-clamp-1 text-black dark:text-gray-400'>
@@ -113,7 +111,7 @@ const TaskCard = ({ task }) => {
             className='w-full flex gap-4 items-center text-sm text-gray-500 font-semibold disabled:cursor-not-allowed disabled:text-gray-300'
           >
             <IoMdAdd className='text-lg' />
-            <span>ADD SUBTASK</span>
+            <span>Add Subtask</span>
           </button>
         </div>
       </div>

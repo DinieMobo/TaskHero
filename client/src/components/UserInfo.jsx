@@ -3,9 +3,8 @@ import { Fragment } from "react";
 import { getInitials } from "../utils";
 
 export default function UserInfo({ user }) {
-  // Add check for user being null or undefined
   if (!user) {
-    return null; // Don't render this component if user isn't available
+    return null;
   }
 
   return (

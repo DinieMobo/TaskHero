@@ -11,8 +11,8 @@ import {
   MdKeyboardDoubleArrowUp,
 } from "react-icons/md";
 import { Chart, Loading } from "../components";
-import { useGetDasboardStatsQuery } from "../redux/slices/api/taskApiSlice";
-import { PRIOTITYSTYELS, TASK_TYPE, getInitials } from "../utils";
+import { useGetDashboardStatsQuery } from "../redux/slices/api/taskApiSlice";
+import { PriorityStyles, Task_Type, getInitials } from "../utils";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -39,7 +39,7 @@ const Card = ({ label, count, lastMonth, bg, icon }) => {
 };
 
 const Dashboard = () => {
-  const { data, isLoading, error } = useGetDasboardStatsQuery();
+  const { data, isLoading, error } = useGetDashboardStatsQuery();
   const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
@@ -296,7 +296,7 @@ const TaskTable = ({ tasks }) => {
         <td className='py-3 px-2'>
           <Link to={`/task/${task._id}`} className="hover:underline">
             <div className='flex items-center gap-2'>
-              <div className={clsx("w-4 h-4 rounded-full", TASK_TYPE[task.stage] || "bg-gray-400")} />
+              <div className={clsx("w-4 h-4 rounded-full", Task_Type[task.stage] || "bg-gray-400")} />
               <p className='text-base text-black dark:text-gray-300 line-clamp-1'>
                 {task?.title || "Untitled Task"}
               </p>
@@ -305,7 +305,7 @@ const TaskTable = ({ tasks }) => {
         </td>
         <td className='py-3 px-2'>
           <div className="flex gap-1 items-center">
-            <span className={clsx("text-lg", PRIOTITYSTYELS[task?.priority] || "text-gray-500")}>
+            <span className={clsx("text-lg", PriorityStyles[task?.priority] || "text-gray-500")}>
               {Icons[task?.priority] || Icons.low}
             </span>
             <span className='capitalize'>{task?.priority || "low"}</span>

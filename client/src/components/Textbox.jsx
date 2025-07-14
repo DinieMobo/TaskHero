@@ -18,7 +18,6 @@ const Textbox = React.forwardRef(
     },
     ref
   ) => {
-    // Determine if using controlled or uncontrolled component approach
     const isControlled = value !== undefined && onChange !== undefined;
 
     return (
@@ -34,7 +33,6 @@ const Textbox = React.forwardRef(
 
         <div>
           {isControlled ? (
-            // Controlled input
             <input
               type={type || "text"}
               name={name}
@@ -51,7 +49,6 @@ const Textbox = React.forwardRef(
               aria-invalid={error ? "true" : "false"}
             />
           ) : (
-            // Uncontrolled input (react-hook-form)
             <input
               type={type || "text"}
               name={name}

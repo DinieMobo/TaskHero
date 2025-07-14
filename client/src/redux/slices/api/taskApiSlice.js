@@ -1,9 +1,9 @@
-import { TASKS_URL } from "../../../utils/contants";
+import { TASKS_URL } from "../../../utils/contents";
 import { apiSlice } from "../apiSlice";
 
-// Rename this to avoid confusion - this is an endpoint injection, not a new API slice
 export const taskApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    // Create a new task
     createTask: builder.mutation({
       query: (data) => ({
         url: `${TASKS_URL}/create`,
@@ -13,6 +13,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    // Duplicate a task
     duplicateTask: builder.mutation({
       query: (id) => ({
         url: `${TASKS_URL}/duplicate/${id}`,
@@ -22,6 +23,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    // Update an existing task
     updateTask: builder.mutation({
       query: (data) => ({
         url: `${TASKS_URL}/update/${data._id}`,
@@ -31,6 +33,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    // Get all tasks
     getAllTask: builder.query({
       query: ({ strQuery = "", isTrashed = "", search = "" }) => ({
         url: `${TASKS_URL}?stage=${strQuery}&isTrashed=${isTrashed}&search=${search}`,
@@ -46,6 +49,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
       providesTags: ['Tasks'],
     }),
 
+    // Get a single task
     getSingleTask: builder.query({
       query: (id) => ({
         url: `${TASKS_URL}/${id}`,
@@ -55,6 +59,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
       providesTags: (result, error, id) => [{ type: 'Task', id }],
     }),
 
+    // Create a subtask
     createSubTask: builder.mutation({
       query: ({ data, id }) => ({
         url: `${TASKS_URL}/create-subtask/${id}`,
@@ -64,6 +69,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    // Post task activity
     postTaskActivity: builder.mutation({
       query: ({ data, id }) => ({
         url: `${TASKS_URL}/activity/${id}`,
@@ -73,6 +79,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    // Trash task
     trashTask: builder.mutation({
       query: (data) => ({
         url: `${TASKS_URL}/${data.id}`,
@@ -82,6 +89,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ['Tasks'],
     }),
 
+    // Delete or restore task
     deleteRestoreTask: builder.mutation({
       query: ({ id, actionType }) => ({
         url: `${TASKS_URL}/delete-restore/${id}?actionType=${actionType}`,
@@ -91,7 +99,8 @@ export const taskApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ['Tasks'],
     }),
 
-    getDasboardStats: builder.query({
+    // Get dashboard stats
+    getDashboardStats: builder.query({
       query: () => ({
         url: `${TASKS_URL}/dashboard`,
         method: "GET",
@@ -99,6 +108,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    // Change task stage
     changeTaskStage: builder.mutation({
       query: (data) => ({
         url: `${TASKS_URL}/change-stage/${data?.id}`,
@@ -108,6 +118,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    // Change Sub task status
     changeSubTaskStatus: builder.mutation({
       query: (data) => ({
         url: `${TASKS_URL}/change-status/${data?.id}/${data?.subId}`,
@@ -119,7 +130,6 @@ export const taskApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-// Export your hooks from the injected endpoints
 export const {
   usePostTaskActivityMutation,
   useCreateTaskMutation,
@@ -130,7 +140,7 @@ export const {
   useDuplicateTaskMutation,
   useUpdateTaskMutation,
   useGetSingleTaskQuery,
-  useGetDasboardStatsQuery,
+  useGetDashboardStatsQuery,
   useChangeTaskStageMutation,
   useChangeSubTaskStatusMutation,
 } = taskApiSlice;

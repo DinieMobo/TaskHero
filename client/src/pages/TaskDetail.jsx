@@ -22,8 +22,8 @@ import {
   usePostTaskActivityMutation,
 } from "../redux/slices/api/taskApiSlice";
 import {
-  PRIOTITYSTYELS,
-  TASK_TYPE,
+  PriorityStyles,
+  Task_Type,
   getCompletedSubTasks,
   getInitials,
 } from "../utils";
@@ -52,7 +52,7 @@ const TABS = [
   { title: "Activities/Timeline", icon: <RxActivityLog /> },
 ];
 
-const TASKTYPEICON = {
+const TaskTypeIcon = {
   commented: (
     <div className='w-10 h-10 rounded-full bg-gray-500 flex items-center justify-center text-white'>
       <MdOutlineMessage />,
@@ -124,7 +124,7 @@ const Activities = ({ activity, id, refetch }) => {
       <div className={`flex space-x-4`}>
         <div className='flex flex-col items-center flex-shrink-0'>
           <div className='w-10 h-10 flex items-center justify-center'>
-            {TASKTYPEICON[item?.type]}
+            {TaskTypeIcon[item?.type]}
           </div>
           <div className='h-full flex items-center'>
             <div className='w-0.5 bg-gray-300 h-full'></div>
@@ -248,7 +248,7 @@ const TaskDetail = () => {
                   <div
                     className={clsx(
                       "flex gap-1 items-center text-base font-semibold px-3 py-1 rounded-full",
-                      PRIOTITYSTYELS[task?.priority],
+                      PriorityStyles[task?.priority],
                       bgColor[task?.priority]
                     )}
                   >
@@ -257,7 +257,7 @@ const TaskDetail = () => {
                   </div>
 
                   <div className={clsx("flex items-center gap-2")}>
-                    <TaskColor className={TASK_TYPE[task?.stage]} />
+                    <TaskColor className={Task_Type[task?.stage]} />
                     <span className='text-black uppercase'>{task?.stage}</span>
                   </div>
                 </div>
@@ -280,7 +280,7 @@ const TaskDetail = () => {
 
                 <div className='space-y-4 py-6'>
                   <p className='text-gray-500 font-semibold text-sm'>
-                    SUB-TASKS
+                    Sub-Tasks
                   </p>
                   <div className='space-y-3'>
                     {(task?.subTasks || []).map((el, index) => (
@@ -344,7 +344,7 @@ const TaskDetail = () => {
 
                 <div className='space-y-4 py-6'>
                   <p className='text-gray-500 font-semibold text-sm'>
-                    TASK TEAM
+                    Task Team
                   </p>
                   <div className='space-y-3'>
                     {task?.team?.map((member, index) => (
@@ -374,14 +374,14 @@ const TaskDetail = () => {
               <div className='w-full md:w-1/2 space-y-3'>
                 {task?.description && (
                   <div className='mb-10'>
-                    <p className='text-lg font-semibold'>TASK DESCRIPTION</p>
+                    <p className='text-lg font-semibold'>Task Description</p>
                     <div className='w-full'>{task?.description}</div>
                   </div>
                 )}
 
                 {task?.assets?.length > 0 && (
                   <div className='pb-10'>
-                    <p className='text-lg font-semibold'>ASSETS</p>
+                    <p className='text-lg font-semibold'>Assets</p>
                     <div className='w-full grid grid-cols-1 md:grid-cols-2 gap-4'>
                       {task?.assets?.map((el, index) => (
                         <img
@@ -397,7 +397,7 @@ const TaskDetail = () => {
 
                 {task?.links?.length > 0 && (
                   <div className=''>
-                    <p className='text-lg font-semibold'>SUPPORT LINKS</p>
+                    <p className='text-lg font-semibold'>Support Links</p>
                     <div className='w-full flex flex-col gap-4'>
                       {task?.links?.map((el, index) => (
                         <a

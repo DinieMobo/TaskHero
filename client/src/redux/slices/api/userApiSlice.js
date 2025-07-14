@@ -1,8 +1,9 @@
-import { USERS_URL } from "../../../utils/contants";
+import { USERS_URL } from "../../../utils/contents";
 import { apiSlice } from "../apiSlice";
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    // Update user profile
     updateUserProfile: builder.mutation({
       query: (data) => ({
         url: `${USERS_URL}/profile`,
@@ -12,6 +13,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    // Get user task status
     getUserTaskStatus: builder.query({
       query: () => ({
         url: `${USERS_URL}/get-status`,
@@ -20,15 +22,14 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    // Get notifications
     getNotifications: builder.query({
       query: () => ({
         url: `${USERS_URL}/notifications`,
         method: "GET",
         credentials: "include",
       }),
-      // Add proper response handling
       transformResponse: (response) => {
-        // Ensure we always return an array
         if (!response || !Array.isArray(response)) {
           console.warn("Unexpected notifications response format", response);
           return [];
@@ -36,9 +37,10 @@ export const userApiSlice = apiSlice.injectEndpoints({
         return response;
       },
       providesTags: ['Notifications'],
-      keepUnusedDataFor: 30, // Refresh data after 30 seconds
+      keepUnusedDataFor: 30, // 30 seconds
     }),
 
+    // Delete user
     deleteUser: builder.mutation({
       query: (id) => ({
         url: `${USERS_URL}/${id}`,
@@ -47,6 +49,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    // User actions
     userAction: builder.mutation({
       query: (data) => ({
         url: `${USERS_URL}/${data?.id}`,
@@ -56,9 +59,9 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    markNotiAsRead: builder.mutation({
+    // Mark notifications as read
+    markNotificationAsRead: builder.mutation({
       query: ({ isReadType, id }) => ({
-        // Use absolute URL path to ensure correct routing
         url: `/api${USERS_URL}/read-noti`,
         method: "PUT",
         body: { isReadType, id },
@@ -67,6 +70,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ['Notifications'],
     }),
 
+    // Change password
     changePassword: builder.mutation({
       query: (data) => ({
         url: `${USERS_URL}/change-password`,
@@ -76,6 +80,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    // Get team list
     getTeamList: builder.query({
       query: ({ search }) => ({
         url: `${USERS_URL}/team?search=${search || ""}`,
@@ -83,23 +88,23 @@ export const userApiSlice = apiSlice.injectEndpoints({
         credentials: "include",
       }),
       transformResponse: (response) => {
-        // Add error handling for when response is not as expected
         if (!response || !Array.isArray(response)) {
           return [];
         }
         return response;
       },
-      keepUnusedDataFor: 5, // Keep data cached for 5 seconds
+      keepUnusedDataFor: 5, // 5 seconds
       providesTags: ['TeamList'],
     }),
 
+    // Get user stats
     getUserStats: builder.query({
       query: () => ({
         url: `${USERS_URL}/stats`,
         method: "GET",
         credentials: "include",
       }),
-      keepUnusedDataFor: 60, // Cache for 60 seconds
+      keepUnusedDataFor: 60, // 60 seconds
     }),
   }),
 });
@@ -110,7 +115,7 @@ export const {
   useUserActionMutation,
   useChangePasswordMutation,
   useGetNotificationsQuery,
-  useMarkNotiAsReadMutation,
+  useMarkNotificationAsReadMutation,
   useGetUserTaskStatusQuery,
   useGetTeamListQuery,
   useGetUserStatsQuery,

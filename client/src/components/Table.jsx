@@ -7,7 +7,7 @@ import {
 } from "react-icons/md";
 import { toast } from "sonner";
 import { useTrashTaskMutation } from "../redux/slices/api/taskApiSlice.js";
-import { BGS, PRIOTITYSTYELS, TASK_TYPE, formatDate } from "../utils/index.js";
+import { BGS, PriorityStyles, Task_Type, formatDate } from "../utils/index.js";
 
 import { Button, ConfirmatioDialog, UserInfo } from "./index";
 import { AddTask, TaskAssets, TaskColor } from "./tasks";
@@ -71,7 +71,7 @@ const Table = ({ tasks }) => {
       <td className='py-2'>
         <Link to={`/task/${task._id}`}>
           <div className='flex items-center gap-2'>
-            <TaskColor className={TASK_TYPE[task.stage]} />
+            <TaskColor className={Task_Type[task.stage]} />
             <p className='w-full line-clamp-2 text-base text-black'>
               {task?.title}
             </p>
@@ -81,7 +81,7 @@ const Table = ({ tasks }) => {
 
       <td className='py-2'>
         <div className={"flex gap-1 items-center"}>
-          <span className={clsx("text-lg", PRIOTITYSTYELS[task?.priority])}>
+          <span className={clsx("text-lg", PriorityStyles[task?.priority])}>
             {Icons[task?.priority]}
           </span>
           <span className='capitalize line-clamp-1'>

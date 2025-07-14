@@ -4,7 +4,7 @@ import ChangePassword from "./ChangePassword";
 import { Chart } from "./Chart";
 import ConfirmatioDialog, { UserAction } from "./ConfirmationDialog";
 import Loading from "./Loading";
-import ModalWrapper from "./ModalWrapper";
+import ModelWrapper from "./ModelWrapper";
 import Navbar from "./Navbar";
 import SelectList from "./SelectList";
 import Sidebar from "./Sidebar";
@@ -23,7 +23,7 @@ export {
   Chart,
   ConfirmatioDialog,
   Loading,
-  ModalWrapper,
+  ModelWrapper,
   Navbar,
   SelectList,
   Sidebar,

@@ -1,7 +1,7 @@
 import { Dialog } from "@headlessui/react";
 import clsx from "clsx";
 import { FaQuestion } from "react-icons/fa";
-import { Button, ModalWrapper } from "./";
+import { Button, ModelWrapper } from "./";
 
 export default function ConfirmatioDialog({
   open,
@@ -18,7 +18,6 @@ export default function ConfirmatioDialog({
     setOpen(false);
   };
 
-  // Determine the appropriate message if none is provided
   const dialogMessage =
     msg ??
     (type === "duplicate"
@@ -27,7 +26,6 @@ export default function ConfirmatioDialog({
       ? "Are you sure you want to restore this item?"
       : "Are you sure you want to delete the selected record?");
 
-  // Determine the appropriate action button label
   const actionLabel =
     type === "duplicate"
       ? "Duplicate"
@@ -35,7 +33,6 @@ export default function ConfirmatioDialog({
       ? "Restore"
       : "Delete";
 
-  // Determine the appropriate button color
   const buttonColorClass =
     type === "duplicate"
       ? "bg-blue-600 hover:bg-blue-500"
@@ -43,7 +40,6 @@ export default function ConfirmatioDialog({
       ? "bg-yellow-600 hover:bg-yellow-500"
       : "bg-red-600 hover:bg-red-500";
 
-  // Determine the appropriate icon color
   const iconColorClass =
     type === "duplicate"
       ? "text-blue-600 bg-blue-100"
@@ -53,7 +49,7 @@ export default function ConfirmatioDialog({
 
   return (
     <>
-      <ModalWrapper open={open} setOpen={closeDialog}>
+      <ModelWrapper open={open} setOpen={closeDialog}>
         <div className="py-4 w-full flex flex-col gap-4 items-center justify-center">
           <Dialog.Title as="h3" className="">
             <p className={clsx("p-3 rounded-full", iconColorClass)}>
@@ -82,7 +78,7 @@ export default function ConfirmatioDialog({
             />
           </div>
         </div>
-      </ModalWrapper>
+      </ModelWrapper>
     </>
   );
 }
@@ -94,7 +90,7 @@ export function UserAction({ open, setOpen, onClick = () => {} }) {
 
   return (
     <>
-      <ModalWrapper open={open} setOpen={closeDialog}>
+      <ModelWrapper open={open} setOpen={closeDialog}>
         <div className="py-4 w-full flex flex-col gap-4 items-center justify-center">
           <Dialog.Title as="h3" className="">
             <p className={clsx("p-3 rounded-full ", "text-red-600 bg-red-200")}>
@@ -125,7 +121,7 @@ export function UserAction({ open, setOpen, onClick = () => {} }) {
             />
           </div>
         </div>
-      </ModalWrapper>
+      </ModelWrapper>
     </>
   );
 }
