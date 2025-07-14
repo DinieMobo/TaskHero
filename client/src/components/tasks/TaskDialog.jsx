@@ -1,0 +1,218 @@
+import React, { Fragment, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AiTwotoneFolderOpen } from "react-icons/ai";
+import { BsThreeDots } from "react-icons/bs";
+import { HiDuplicate } from "react-icons/hi";
+import { MdAdd, MdOutlineEdit } from "react-icons/md";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { Menu, Transition } from "@headlessui/react";
+import { toast } from "sonner"; // Changed from react-toastify to sonner to match your project
+import {
+  useDuplicateTaskMutation,
+  usePostTaskActivityMutation,
+  useTrashTaskMutation,
+} from "../../redux/slices/api/taskApiSlice";
+import AddTask from "./AddTask";
+import AddSubTask from "./AddSubTask";
+import ConfirmationDialog from "../ConfirmationDialog";
+import { uploadFile } from "../../utils/cloudinary";
+import Button from "../Button";
+import Textbox from "../Textbox";
+import { BiImages } from "react-icons/bi";
+
+const TaskDialog = ({ task }) => {
+  const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selected, setSelected] = useState(null);
+  const [text, setText] = useState("");
+  const [assets, setAssets] = useState([]);
+  const [isUploading, setIsUploading] = useState(false);
+  const [msg, setMsg] = useState("");
+
+  const navigate = useNavigate();
+
+  const [postActivity, { isLoading }] = usePostTaskActivityMutation();
+  const [deleteTask, { isLoading: isDeleting }] = useTrashTaskMutation();
+  const [duplicateTask] = useDuplicateTaskMutation();
+
+  const handleSelect = (e) => {
+    setAssets(e.target.files);
+  };
+
+  const submitHandler = async () => {
+    if (!text) {
+      toast.error("Please enter a comment.");
+      return;
+    }
+    setIsUploading(true);
+    try {
+      const uploadedUrls =
+        assets.length > 0
+          ? await Promise.all(Array.from(assets).map((file) => uploadFile(file)))
+          : [];
+
+      const data = {
+        activity: text,
+        assets: uploadedUrls,
+      };
+      const res = await postActivity({ data, id: task._id }).unwrap();
+
+      toast.success(res.message);
+      setText("");
+      setAssets([]);
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message || error.error);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const deleteHandler = async () => {
+    try {
+      // Fix: Pass the correct object structure expected by the API
+      const res = await deleteTask({
+        id: task._id,
+      }).unwrap();
+
+      toast.success(res?.message);
+
+      setTimeout(() => {
+        setOpenDialog(false);
+        window.location.reload();
+      }, 500);
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message || error.error);
+    }
+  };
+
+  const duplicateHandler = async () => {
+    try {
+      const res = await duplicateTask(task._id).unwrap();
+      toast.success(res.message);
+
+      setTimeout(() => {
+        setOpenDialog(false);
+        window.location.reload();
+      }, 500);
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message || error.error);
+    }
+  };
+
+  const deleteClicks = () => {
+    setSelected("delete");
+    setOpenDialog(true);
+  };
+
+  const duplicateClicks = () => {
+    setSelected("duplicate");
+    setMsg("Are you sure you want to duplicate this task?");
+    setOpenDialog(true);
+  };
+
+  const items = [
+    {
+      label: "Open Task",
+      icon: <AiTwotoneFolderOpen className="mr-2 h-5 w-5" aria-hidden="true" />,
+      onClick: () => navigate(`/task/${task._id}`),
+    },
+    {
+      label: "Edit",
+      icon: <MdOutlineEdit className="mr-2 h-5 w-5" aria-hidden="true" />,
+      onClick: () => setOpenEdit(true),
+    },
+    {
+      label: "Add Sub-Task",
+      icon: <MdAdd className="mr-2 h-5 w-5" aria-hidden="true" />,
+      onClick: () => setOpen(true),
+    },
+    {
+      label: "Duplicate",
+      icon: <HiDuplicate className="mr-2 h-5 w-5" aria-hidden="true" />,
+      onClick: duplicateClicks,
+    },
+  ];
+
+  return (
+    <>
+      <div>
+        <Menu as="div" className="relative inline-block text-left">
+          <Menu.Button className="inline-flex w-full justify-center rounded-md px-4 py-2 text-sm font-medium text-gray-600 ">
+            <BsThreeDots />
+          </Menu.Button>
+
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-100"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-75"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <Menu.Items className="absolute p-4 right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none z-50">
+              <div className="px-1 py-1 space-y-2">
+                {items.map((el) => (
+                  <Menu.Item key={el.label}>
+                    {({ active }) => (
+                      <button
+                        onClick={el?.onClick}
+                        className={`${
+                          active ? "bg-blue-500 text-white" : "text-gray-900"
+                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                      >
+                        {el.icon}
+                        {el.label}
+                      </button>
+                    )}
+                  </Menu.Item>
+                ))}
+              </div>
+
+              <div className="px-1 py-1">
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      onClick={deleteClicks}
+                      className={`${
+                        active ? "bg-blue-500 text-white" : "text-red-900"
+                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                    >
+                      <RiDeleteBin6Line
+                        className="mr-2 h-5 w-5 text-red-400"
+                        aria-hidden="true"
+                      />
+                      Delete
+                    </button>
+                  )}
+                </Menu.Item>
+              </div>
+            </Menu.Items>
+          </Transition>
+        </Menu>
+      </div>
+
+      <AddTask
+        open={openEdit}
+        setOpen={setOpenEdit}
+        task={task}
+        key={new Date().getTime()}
+      />
+
+      <AddSubTask open={open} setOpen={setOpen} id={task._id} />
+
+      <ConfirmationDialog
+        open={openDialog}
+        setOpen={setOpenDialog}
+        onClick={selected === "delete" ? deleteHandler : duplicateHandler}
+        msg={msg}
+      />
+    </>
+  );
+};
+
+export default TaskDialog;
