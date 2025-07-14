@@ -7,6 +7,7 @@ import TaskColor from "./TaskColor";
 import TaskDialog from "./TaskDialog";
 import TaskTitle from "./TaskTitle";
 import UserList from "./UserList";
+import TaskStageUpdater from "./TaskStageUpdater";
 
 export {
   AddSubTask,
@@ -18,4 +19,5 @@ export {
   TaskDialog,
   TaskTitle,
   UserList,
+  TaskStageUpdater,
 };

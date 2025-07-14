@@ -15,28 +15,7 @@ import { useGetDashboardStatsQuery } from "../redux/slices/api/taskApiSlice";
 import { PriorityStyles, Task_Type, getInitials } from "../utils";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-
-const Card = ({ label, count, lastMonth, bg, icon }) => {
-  return (
-    <div className='w-full h-32 bg-white dark:bg-slate-800 p-5 shadow-md rounded-md flex items-center justify-between'>
-      <div className='h-full flex flex-1 flex-col justify-between'>
-        <p className='text-base text-gray-600 dark:text-gray-300'>{label}</p>
-        <span className='text-2xl font-semibold dark:text-white'>{count}</span>
-        <span className='text-sm text-gray-400 dark:text-gray-500'>
-          {lastMonth} last month
-        </span>
-      </div>
-      <div
-        className={clsx(
-          "w-10 h-10 rounded-full flex items-center justify-center text-white",
-          bg
-        )}
-      >
-        {icon}
-      </div>
-    </div>
-  );
-};
+import StatCard from "../components/Dashboard/StatCard";
 
 const Dashboard = () => {
   const { data, isLoading, error } = useGetDashboardStatsQuery();
@@ -126,10 +105,10 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className='h-full py-4'>
+    <div className='h-full py-4 animate-fadeIn'>
       <div className='grid grid-cols-1 md:grid-cols-4 gap-5'>
         {stats?.map(({ icon, bg, label, total, lastMonth }, index) => (
-          <Card
+          <StatCard
             key={index}
             icon={icon}
             bg={bg}
@@ -140,7 +119,7 @@ const Dashboard = () => {
         ))}
       </div>
 
-      <div className='w-full bg-white dark:bg-slate-800 my-16 p-4 rounded shadow-md'>
+      <div className='w-full bg-white dark:bg-slate-800 my-16 p-4 rounded shadow-md transition-all duration-300 hover:shadow-lg'>
         <h4 className='text-xl text-gray-500 dark:text-gray-300 font-bold mb-2'>
           Task Chart by Priority
         </h4>

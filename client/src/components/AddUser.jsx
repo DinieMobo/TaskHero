@@ -32,11 +32,10 @@ const AddUser = ({ open, setOpen, userData }) => {
           dispatch(setCredentials({ ...res?.user }));
         }
       } else {
-        // Use admin registration endpoint when admin adds a user
         const res = await addNewUser({
           ...data,
           password: data?.email,
-          isAdminCreated: true, // Add flag to identify admin-created users
+          isAdminCreated: true,
         }).unwrap();
         toast.success(res?.message || "New User added successfully");
       }
@@ -58,7 +57,7 @@ const AddUser = ({ open, setOpen, userData }) => {
             as='h2'
             className='text-base font-bold leading-6 text-gray-900 mb-4'
           >
-            {userData ? "UPDATE PROFILE" : "ADD NEW USER"}
+            {userData ? "Update Profile" : "Add New User"}
           </Dialog.Title>
           <div className='mt-2 flex flex-col gap-6'>
             <Textbox

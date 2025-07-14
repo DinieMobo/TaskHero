@@ -14,9 +14,9 @@ import { AddTask, TaskAssets, TaskColor } from "./tasks";
 import { Link } from "react-router-dom";
 
 const Icons = {
-  high: <MdKeyboardDoubleArrowUp />,
-  medium: <MdKeyboardArrowUp />,
-  low: <MdKeyboardArrowDown />,
+  High: <MdKeyboardDoubleArrowUp />,
+  Medium: <MdKeyboardArrowUp />,
+  Low: <MdKeyboardArrowDown />,
 };
 
 const Table = ({ tasks }) => {
@@ -67,12 +67,12 @@ const Table = ({ tasks }) => {
   );
 
   const TableRow = ({ task }) => (
-    <tr className='border-b border-gray-200 text-gray-600 hover:bg-gray-300/10'>
+    <tr className='border-b border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-300/10 dark:hover:bg-gray-700/20'>
       <td className='py-2'>
         <Link to={`/task/${task._id}`}>
           <div className='flex items-center gap-2'>
             <TaskColor className={Task_Type[task.stage]} />
-            <p className='w-full line-clamp-2 text-base text-black'>
+            <p className='w-full line-clamp-2 text-base text-black dark:text-white'>
               {task?.title}
             </p>
           </div>
@@ -84,14 +84,14 @@ const Table = ({ tasks }) => {
           <span className={clsx("text-lg", PriorityStyles[task?.priority])}>
             {Icons[task?.priority]}
           </span>
-          <span className='capitalize line-clamp-1'>
+          <span className='capitalize line-clamp-1 dark:text-gray-300'>
             {task?.priority} Priority
           </span>
         </div>
       </td>
 
       <td className='py-2'>
-        <span className='text-sm text-gray-600'>
+        <span className='text-sm text-gray-600 dark:text-gray-400'>
           {formatDate(new Date(task?.date))}
         </span>
       </td>
@@ -140,9 +140,9 @@ const Table = ({ tasks }) => {
 
   return (
     <>
-      <div className='bg-white  px-2 md:px-4 pt-4 pb-9 shadow-md rounded'>
+      <div className='bg-white dark:bg-slate-800 px-2 md:px-4 pt-4 pb-9 shadow-md rounded'>
         <div className='overflow-x-auto'>
-          <table className='w-full '>
+          <table className='w-full'>
             <TableHeader />
             <tbody>
               {(tasks || []).map((task, index) => (

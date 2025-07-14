@@ -13,8 +13,8 @@ import { toast } from "sonner";
 import { uploadFile } from "../../utils/cloudinary";
 import UserList from "./UserList";
 
-const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
-const PRIORITY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
+const Lists = ["To-Do", "In Progress", "Completed"];
+const Priority = ["High", "Medium", "Normal", "Low"];
 
 const AddTask = ({ open, setOpen, task, onSuccess }) => {
   const {
@@ -32,9 +32,9 @@ const AddTask = ({ open, setOpen, task, onSuccess }) => {
     },
   });
 
-  const [stage, setStage] = useState(task?.stage?.toUpperCase() || LISTS[0]);
+  const [stage, setStage] = useState(task?.stage?.toUpperCase() || Lists[0]);
   const [priority, setPriority] = useState(
-    task?.priority?.toUpperCase() || PRIORITY[2]
+    task?.priority?.toUpperCase() || Priority[2]
   );
   const [team, setTeam] = useState(task?.team || []);
   const [assets, setAssets] = useState([]);
@@ -62,7 +62,6 @@ const AddTask = ({ open, setOpen, task, onSuccess }) => {
       const res = await createTask(newData).unwrap();
       toast.success(res.message);
 
-      // Call onSuccess callback if provided
       if (typeof onSuccess === "function") {
         onSuccess();
       }
@@ -90,7 +89,7 @@ const AddTask = ({ open, setOpen, task, onSuccess }) => {
             as='h2'
             className='text-base font-bold leading-6 text-gray-900 mb-4'
           >
-            {task ? "UPDATE TASK" : "ADD TASK"}
+            {task ? "Update Task" : "Add Task"}
           </Dialog.Title>
 
           <div className='mt-2 flex flex-col gap-6'>
@@ -109,7 +108,7 @@ const AddTask = ({ open, setOpen, task, onSuccess }) => {
             <div className='flex gap-4'>
               <SelectList
                 label='Task Stage'
-                lists={LISTS}
+                Lists={Lists}
                 selected={stage}
                 setSelected={setStage}
               />
@@ -132,7 +131,7 @@ const AddTask = ({ open, setOpen, task, onSuccess }) => {
             <div className='flex gap-4'>
               <SelectList
                 label='Priority Level'
-                lists={PRIORITY}
+                Lists={Priority}
                 selected={priority}
                 setSelected={setPriority}
               />

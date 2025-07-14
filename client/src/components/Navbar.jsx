@@ -39,7 +39,8 @@ const Navbar = () => {
         <div className=''>
           <button
             onClick={() => dispatch(setOpenSidebar(true))}
-            className='text-2xl text-gray-500 block md:hidden'
+            className='text-2xl text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+            aria-label='Open menu'
           >
             ☰
           </button>

@@ -153,7 +153,7 @@ const TaskDialog = ({ task }) => {
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
           >
-            <Menu.Items className="absolute p-4 right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none z-50">
+            <Menu.Items className="absolute p-4 right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 dark:divide-gray-700 rounded-md bg-white dark:bg-slate-800 shadow-lg ring-1 ring-black/5 focus:outline-none z-50">
               <div className="px-1 py-1 space-y-2">
                 {items.map((el) => (
                   <Menu.Item key={el.label}>
@@ -161,7 +161,9 @@ const TaskDialog = ({ task }) => {
                       <button
                         onClick={el?.onClick}
                         className={`${
-                          active ? "bg-blue-500 text-white" : "text-gray-900"
+                          active
+                            ? "bg-blue-500 text-white"
+                            : "text-gray-900 dark:text-gray-200"
                         } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                       >
                         {el.icon}
@@ -178,7 +180,9 @@ const TaskDialog = ({ task }) => {
                     <button
                       onClick={deleteClicks}
                       className={`${
-                        active ? "bg-blue-500 text-white" : "text-red-900"
+                        active
+                          ? "bg-blue-500 text-white"
+                          : "text-red-900 dark:text-red-400"
                       } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                     >
                       <RiDeleteBin6Line

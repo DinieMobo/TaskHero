@@ -120,11 +120,10 @@ export const taskApiSlice = apiSlice.injectEndpoints({
 
     // Change Sub task status
     changeSubTaskStatus: builder.mutation({
-      query: (data) => ({
-        url: `${TASKS_URL}/change-status/${data?.id}/${data?.subId}`,
-        method: "PUT",
+      query: ({ taskId, subTaskId, data }) => ({
+        url: `/api/tasks/change-status/${taskId}/${subTaskId}`,
+        method: 'PUT',
         body: data,
-        credentials: "include",
       }),
     }),
   }),

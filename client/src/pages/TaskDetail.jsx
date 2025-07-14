@@ -49,7 +49,7 @@ const bgColor = {
 
 const TABS = [
   { title: "Task Detail", icon: <FaTasks /> },
-  { title: "Activities/Timeline", icon: <RxActivityLog /> },
+  { title: "Timeline", icon: <RxActivityLog /> },
 ];
 
 const TaskTypeIcon = {
@@ -101,6 +101,11 @@ const Activities = ({ activity, id, refetch }) => {
   const [postActivity, { isLoading }] = usePostTaskActivityMutation();
 
   const handleSubmit = async () => {
+    if (!text.trim()) {
+      toast.error("Please enter activity text");
+      return;
+    }
+
     try {
       const data = {
         type: selected?.toLowerCase(),
@@ -124,7 +129,7 @@ const Activities = ({ activity, id, refetch }) => {
       <div className={`flex space-x-4`}>
         <div className='flex flex-col items-center flex-shrink-0'>
           <div className='w-10 h-10 flex items-center justify-center'>
-            {TaskTypeIcon[item?.type]}
+            {TaskTypeIcon[item?.type] || TaskTypeIcon['assigned']}
           </div>
           <div className='h-full flex items-center'>
             <div className='w-0.5 bg-gray-300 h-full'></div>
@@ -132,10 +137,10 @@ const Activities = ({ activity, id, refetch }) => {
         </div>
 
         <div className='flex flex-col gap-y-1 mb-8'>
-          <p className='font-semibold'>{item?.by?.name}</p>
+          <p className='font-semibold'>{item?.by?.name || 'User'}</p>
           <div className='text-gray-500 space-x-2'>
-            <span className='capitalize'>{item?.type}</span>
-            <span className='text-sm'>{moment(item?.date).fromNow()}</span>
+            <span className='capitalize'>{item?.type || 'update'}</span>
+            <span className='text-sm'>{moment(item?.date || item?.createdAt).fromNow()}</span>
           </div>
           <div className='text-gray-700'>{item?.activity}</div>
         </div>
@@ -150,7 +155,7 @@ const Activities = ({ activity, id, refetch }) => {
         <div className='w-full space-y-0'>
           {activity?.map((item, index) => (
             <Card
-              key={item.id}
+              key={`activity-${index}`}
               item={item}
               isConnected={index < activity?.length - 1}
             />
@@ -200,21 +205,21 @@ const Activities = ({ activity, id, refetch }) => {
 const TaskDetail = () => {
   const { id } = useParams();
   const { data, isLoading, refetch } = useGetSingleTaskQuery(id);
-  const [subTaskAction, { isLoading: isSubmitting }] =
-    useChangeSubTaskStatusMutation();
+  const [subTaskAction, { isLoading: isSubmitting }] = useChangeSubTaskStatusMutation();
 
   const [selected, setSelected] = useState(0);
   const task = data?.task || [];
+  const [activeSubtask, setActiveSubtask] = useState(null);
 
   const handleSubmitAction = async (el) => {
     try {
       const data = {
-        id: el.id,
-        subId: el.subId,
         status: !el.status,
       };
       const res = await subTaskAction({
-        ...data,
+        taskId: el.id,
+        subTaskId: el.subId,
+        data: data
       }).unwrap();
 
       toast.success(res?.message);
@@ -225,10 +230,13 @@ const TaskDetail = () => {
     }
   };
 
-  if (isLoading)
-    <div className='py-10'>
-      <Loading />
-    </div>;
+  if (isLoading) {
+    return (
+      <div className='py-10'>
+        <Loading />
+      </div>
+    );
+  }
 
   const percentageCompleted =
     task?.subTasks?.length === 0
@@ -236,9 +244,16 @@ const TaskDetail = () => {
       : (getCompletedSubTasks(task?.subTasks) / task?.subTasks?.length) * 100;
 
   return (
-    <div className='w-full flex flex-col gap-3 mb-4 overflow-y-hidden'>
-      {/* task detail */}
-      <h1 className='text-2xl text-gray-600 font-bold'>{task?.title}</h1>
+    <div className='w-full flex flex-col gap-3 mb-4 overflow-y-hidden animate-fadeIn'>
+      <div className="flex items-center justify-between mb-4">
+        <h1 className='text-2xl text-gray-600 font-bold'>{task?.title}</h1>
+        <TaskStageUpdater 
+          taskId={id} 
+          currentStage={task?.stage} 
+          onSuccess={refetch} 
+        />
+      </div>
+      
       <Tabs tabs={TABS} setSelected={setSelected}>
         {selected === 0 ? (
           <>
@@ -247,7 +262,7 @@ const TaskDetail = () => {
                 <div className='flex items-center gap-5'>
                   <div
                     className={clsx(
-                      "flex gap-1 items-center text-base font-semibold px-3 py-1 rounded-full",
+                      "flex gap-1 items-center text-base font-semibold px-3 py-1 rounded-full transition-all duration-300 hover:shadow-md",
                       PriorityStyles[task?.priority],
                       bgColor[task?.priority]
                     )}
@@ -269,12 +284,22 @@ const TaskDetail = () => {
                 <div className='flex items-center gap-8 p-4 border-y border-gray-200'>
                   <div className='space-x-2'>
                     <span className='font-semibold'>Assets :</span>
-                    <span>{task?.assets?.length}</span>
+                    <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full">{task?.assets?.length}</span>
                   </div>
                   <span className='text-gray-400'>|</span>
                   <div className='space-x-2'>
                     <span className='font-semibold'>Sub-Task :</span>
-                    <span>{task?.subTasks?.length}</span>
+                    <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full">{task?.subTasks?.length}</span>
+                  </div>
+                  <span className='text-gray-400'>|</span>
+                  <div className='space-x-2'>
+                    <span className='font-semibold'>Progress :</span>
+                    <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-green-500 transition-all duration-1000 ease-out"
+                        style={{ width: `${percentageCompleted}%` }}
+                      ></div>
+                    </div>
                   </div>
                 </div>
 
@@ -284,13 +309,22 @@ const TaskDetail = () => {
                   </p>
                   <div className='space-y-3'>
                     {(task?.subTasks || []).map((el, index) => (
-                      <div key={index + el?._id} className='flex gap-3'>
+                      <div 
+                        key={`subtask-${el?._id || index}`} 
+                        className={clsx(
+                          'flex gap-3 p-3 rounded-lg transition-all duration-300',
+                          activeSubtask === index ? 'bg-gray-100 dark:bg-gray-800' : '',
+                          'hover:bg-gray-50 dark:hover:bg-gray-800'
+                        )}
+                        onMouseEnter={() => setActiveSubtask(index)}
+                        onMouseLeave={() => setActiveSubtask(null)}
+                      >
                         <div className='w-10 h-10 flex items-center justify-center rounded-full bg-violet-200'>
                           <MdTaskAlt className='text-violet-600' size={26} />
                         </div>
 
-                        <div className='space-y-1'>
-                          <div className='flex gap-2 items-center'>
+                        <div className='space-y-1 flex-1'>
+                          <div className='flex gap-2 items-center flex-wrap'>
                             <span className='text-sm text-gray-500'>
                               {new Date(el?.date).toDateString()}
                             </span>
@@ -309,16 +343,22 @@ const TaskDetail = () => {
                               {el?.isCompleted ? "done" : "in progress"}
                             </span>
                           </div>
-                          <p className='text-gray-700 pb-2'>{el?.title}</p>
+                          <p className='text-gray-700 pb-2 font-medium'>{el?.title}</p>
+                          {el?.description && (
+                            <p className="text-gray-600 text-sm">{el.description}</p>
+                          )}
 
                           <>
                             <button
                               disabled={isSubmitting}
-                              className={`text-sm outline-none bg-gray-100 text-gray-800 p-1 rounded ${
+                              className={clsx(
+                                'text-sm outline-none p-2 rounded transition-all duration-300',
                                 el?.isCompleted
-                                  ? "hover:bg-rose-100 hover:text-rose-800"
-                                  : "hover:bg-emerald-100 hover:text-emerald-800"
-                              } disabled:cursor-not-allowed`}
+                                  ? "bg-rose-100 text-rose-800 hover:bg-rose-200"
+                                  : "bg-emerald-100 text-emerald-800 hover:bg-emerald-200",
+                                "disabled:cursor-not-allowed disabled:opacity-50",
+                                activeSubtask === index && "shadow-sm"
+                              )}
                               onClick={() =>
                                 handleSubmitAction({
                                   status: el?.isCompleted,
@@ -349,7 +389,7 @@ const TaskDetail = () => {
                   <div className='space-y-3'>
                     {task?.team?.map((member, index) => (
                       <div
-                        key={index + member?._id}
+                        key={`team-${member?._id || index}`}
                         className='flex gap-4 py-2 items-center border-t border-gray-200'
                       >
                         <div
@@ -385,9 +425,9 @@ const TaskDetail = () => {
                     <div className='w-full grid grid-cols-1 md:grid-cols-2 gap-4'>
                       {task?.assets?.map((el, index) => (
                         <img
-                          key={index}
+                          key={`asset-${index}`}
                           src={el}
-                          alt={index}
+                          alt={`asset-${index}`}
                           className='w-full rounded h-auto md:h-44 2xl:h-52 cursor-pointer transition-all duration-700 md:hover:scale-125 hover:z-50'
                         />
                       ))}
@@ -401,7 +441,7 @@ const TaskDetail = () => {
                     <div className='w-full flex flex-col gap-4'>
                       {task?.links?.map((el, index) => (
                         <a
-                          key={index}
+                          key={`link-${index}`}
                           href={el}
                           target='_blank'
                           className='text-blue-600 hover:underline'

@@ -1,33 +1,44 @@
 import { Transition } from "@headlessui/react";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState, lazy, Suspense } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 import { Navbar, Sidebar } from "./components";
-import {
-  Dashboard,
-  Login,
-  Signup,
-  TaskDetail,
-  Tasks,
-  Trash,
-  Users,
-  StatusPage,
-  ForgotPassword,
-  OTPVerification,
-  ResetPassword,
-  Settings,
-} from "./pages";
 import { setOpenSidebar } from "./redux/slices/authSlice";
 import { ThemeProvider } from "./components";
+import Loading from "./components/Loading";
+
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Login = lazy(() => import('./pages/Login'));
+const Signup = lazy(() => import('./pages/Signup'));
+const TaskDetail = lazy(() => import('./pages/TaskDetail'));
+const Tasks = lazy(() => import('./pages/Tasks'));
+const Trash = lazy(() => import('./pages/Trash'));
+const Users = lazy(() => import('./pages/Users'));
+const StatusPage = lazy(() => import('./pages/Status'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const OTPVerification = lazy(() => import('./pages/OTPVerification'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
+const Settings = lazy(() => import('./pages/Settings'));
+
+const PageLoader = () => (
+  <div className="w-full h-[80vh] flex flex-col items-center justify-center">
+    <Loading size="large" />
+    <p className="mt-4 text-gray-500 dark:text-gray-400">Loading page...</p>
+  </div>
+);
 
 function Layout() {
   const { user } = useSelector((state) => state.auth);
   const location = useLocation();
 
   if (user === undefined) {
-    return <div className="w-full h-screen flex items-center justify-center">Loading...</div>;
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <Loading size="large" />
+      </div>
+    );
   }
 
   if (!user) {
@@ -46,7 +57,9 @@ function Layout() {
         <Navbar />
 
         <div className='p-4 2xl:px-10'>
-          <Outlet />
+          <Suspense fallback={<PageLoader />}>
+            <Outlet />
+          </Suspense>
         </div>
       </div>
     </div>
@@ -81,11 +94,15 @@ const MobileSidebar = () => {
              ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
             onClick={() => closeSidebar()}
           >
-            <div className='bg-white w-3/4 h-full'>
+            <div
+              className='bg-white dark:bg-[#1f1f1f] w-3/4 h-full'
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className='w-full flex justify-end px-5 pt-5'>
                 <button
                   onClick={() => closeSidebar()}
-                  className='flex justify-end items-end'
+                  className='flex justify-end items-end text-gray-800 dark:text-gray-200 hover:text-red-500 dark:hover:text-red-400 transition-colors'
+                  aria-label="Close sidebar"
                 >
                   <IoMdClose size={25} />
                 </button>
@@ -116,6 +133,7 @@ const App = () => {
     
     return 'light';
   });
+  const location = useLocation();
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -137,28 +155,88 @@ const App = () => {
   return (
     <ThemeProvider>
       <div className='w-full min-h-screen bg-[#f3f4f6] dark:bg-[#0d0d0df4]'>
-        <Routes>
+        <Routes location={location}>
           {/* Protected routes */}
           <Route element={<Layout />}>
-            <Route index psth='/' element={<Navigate to='/dashboard' />} />
-            <Route path='/dashboard' element={<Dashboard />} />
-            <Route path='/tasks' element={<Tasks />} />
-            <Route path='/completed/:status?' element={<Tasks />} />
-            <Route path='/in-progress/:status?' element={<Tasks />} />
-            <Route path='/todo/:status?' element={<Tasks />} />
-            <Route path='/trashed' element={<Trash />} />
-            <Route path='/task/:id' element={<TaskDetail />} />
-            <Route path='/team' element={<Users />} />
-            <Route path='/status' element={<StatusPage />} />
-            <Route path='/settings' element={<Settings />} />
+            <Route index path='/' element={<Navigate to='/dashboard' />} />
+            <Route path='/dashboard' element={
+              <Suspense fallback={<PageLoader />}>
+                <Dashboard />
+              </Suspense>
+            } />
+            <Route path='/tasks' element={
+              <Suspense fallback={<PageLoader />}>
+                <Tasks />
+              </Suspense>
+            } />
+            <Route path='/completed/:status?' element={
+              <Suspense fallback={<PageLoader />}>
+                <Tasks />
+              </Suspense>
+            } />
+            <Route path='/in-progress/:status?' element={
+              <Suspense fallback={<PageLoader />}>
+                <Tasks />
+              </Suspense>
+            } />
+            <Route path='/todo/:status?' element={
+              <Suspense fallback={<PageLoader />}>
+                <Tasks />
+              </Suspense>
+            } />
+            <Route path='/trashed' element={
+              <Suspense fallback={<PageLoader />}>
+                <Trash />
+              </Suspense>
+            } />
+            <Route path='/task/:id' element={
+              <Suspense fallback={<PageLoader />}>
+                <TaskDetail />
+              </Suspense>
+            } />
+            <Route path='/team' element={
+              <Suspense fallback={<PageLoader />}>
+                <Users />
+              </Suspense>
+            } />
+            <Route path='/status' element={
+              <Suspense fallback={<PageLoader />}>
+                <StatusPage />
+              </Suspense>
+            } />
+            <Route path='/settings' element={
+              <Suspense fallback={<PageLoader />}>
+                <Settings />
+              </Suspense>
+            } />
           </Route>
 
           {/* Public routes */}
-          <Route path='/log-in' element={<Login />} />
-          <Route path='/sign-up' element={<Signup />} />
-          <Route path='/forgot-password' element={<ForgotPassword />} />
-          <Route path='/otp-verification' element={<OTPVerification />} />
-          <Route path='/reset-password' element={<ResetPassword />} />
+          <Route path='/log-in' element={
+            <Suspense fallback={<PageLoader />}>
+              <Login />
+            </Suspense>
+          } />
+          <Route path='/sign-up' element={
+            <Suspense fallback={<PageLoader />}>
+              <Signup />
+            </Suspense>
+          } />
+          <Route path='/forgot-password' element={
+            <Suspense fallback={<PageLoader />}>
+              <ForgotPassword />
+            </Suspense>
+          } />
+          <Route path='/otp-verification' element={
+            <Suspense fallback={<PageLoader />}>
+              <OTPVerification />
+            </Suspense>
+          } />
+          <Route path='/reset-password' element={
+            <Suspense fallback={<PageLoader />}>
+              <ResetPassword />
+            </Suspense>
+          } />
         </Routes>
       </div>
 
