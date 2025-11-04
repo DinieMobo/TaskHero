@@ -82,11 +82,10 @@ Before you begin, ensure you have the following installed:
 First, clone the TaskHero repository to your local machine:
 
 ```bash
-git clone <repository_url>
+git clone https://github.com/DinieMobo/TaskHero.git
 cd TaskHero
 ```
 
-Replace `<repository_url>` with the actual URL of your GitHub repository (e.g., https://github.com/your-username/TaskHero.git).
 
 You can also download the Entire Repository as a ZIP file and extract it.
 
