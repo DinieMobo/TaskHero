@@ -18,7 +18,7 @@ app.use(
     origin:
       process.env.NODE_ENV === "production"
         ? process.env.CLIENT_URL
-        : "http://localhost:3000", 
+        : "http://localhost:3000", "https://taskhero-two.vercel.app" 
     methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
